@@ -1,0 +1,82 @@
+Write out pseudo-code (both casual and formal) that does the following:
+1. a method that returns the sum of two integers
+2. a method that takes an array of strings, and returns a string that is 
+all of those strings concatenated together.
+3. a method that takes and array of integers, and returns a new array with
+every other element
+
+1. Casual:
+Obtain integer1
+Obtain integer2
+
+Find the total by adding integer1 and integer2
+
+return the total
+
+1. Formal:
+START
+
+GET integer1
+
+GET integer2
+
+total = add integer1 + integer2
+ 
+PRINT total
+
+END
+
+
+2. Casual:
+Given a collection of strings
+
+Iterate through the collection
+  - save the 1st value as the starting phrase
+  - for each iteration add the next string to the phrase
+
+After iterating through the collection, return the saved phrase 
+
+2. Formal:
+START
+
+# Given a collection of strings
+
+SET iterator = 1
+SET phrase = empty string 
+
+WHILE iterator < length of collection of strings
+  add word within strings collection to phrase variable
+  
+  iterator = iterator + 1
+  
+PRINT phrase
+
+END
+
+3. Casual:
+Given an array of integers
+
+Create a new every_other array variable
+
+Iterate through the array of integers
+  -Add every other integer to the every_other array, do this by iterating by 2's
+
+After iterating the the integer array, return the every_other array
+
+3. Formal:
+START
+
+SET iterator = 1
+SET every_other = empty array
+
+WHILE iterator < length of integers array
+  Add number at space iterator in the integers array to every_other
+  
+  ierator = iterator + 2
+
+PRINT every_other
+
+END
+  
+
+
