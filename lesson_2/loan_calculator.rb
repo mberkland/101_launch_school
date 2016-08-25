@@ -112,8 +112,8 @@ loop do
     end
   end
 
-  monthly_payment = amount * (monthly_rate / (1 - (1 + monthly_rate)**-months))
-  to_user("Your monthly payment is $#{monthly_payment.round(2)} a month.")
+  month_payment = amount * (monthly_rate / (1 - (1 + monthly_rate)**-months))
+  to_user("Your monthly payment is $#{format('%.2f', month_payment)} a month.")
 
   to_user("Would you like to calculate a different loan? (Press 'Y' if yes)")
   again = gets.chomp
