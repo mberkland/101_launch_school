@@ -8,11 +8,13 @@ def prompt(message)
 end
 
 def valid_number?(num)
-  num.to_i().nonzero?
+  if num == '0' || num.to_i().nonzero?
+    return true
+  end
 end
 
 def operation_to_message(op)
-  case op
+  word = case op
   when '1'
     'Adding'
   when '2'
@@ -22,6 +24,8 @@ def operation_to_message(op)
   when '4'
     "Dividing"
   end
+
+  word
 end
 
 prompt("Welcome to Calculator! Enter your name:")
