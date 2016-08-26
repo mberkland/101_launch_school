@@ -20,105 +20,77 @@
 # Test each input to make sure valid number
 # Round output to dollars and cents (don't go past hundreds place in decimals)
 # Format messages to user so easier to read
-# Ask if user wants to enter months or years for calculation
 # Ask if user wants to do another calculation or exit program
 
-def valid_number(num)
-  if num == '0' || num.to_f.nonzero?
-    return num.to_f
+def valid_number?(num)
+  if num == '0' || num == "0.0" || num.to_f.nonzero?
+    return true
   else
     return false
   end
 end
 
-def to_user(message)
+def display(message)
   puts "=> #{message}"
 end
 
 loop do
-  to_user("How much is your loan amount? Please exclude commas.")
+  display("How much is your loan amount? Please exclude commas.")
 
   amount = ''
   loop do
     amount = gets.chomp
 
-    if valid_number(amount)
-      amount = valid_number(amount)
+    if valid_number?(amount)
+      amount = amount.to_f
       break
     else
-      to_user("Please enter a valid_number.")
-      to_user("IMPORTANT: Don't use commas in your number!")
+      display("Please enter a valid number.")
+      display("IMPORTANT: Don't use commas in your number!")
     end
   end
 
-  to_user("What is your APR? Exclude percantage symbol from input.")
+  display("What is your APR? Exclude percantage symbol from input.")
 
   apr = ''
   loop do
     apr = gets.chomp
 
-    if valid_number(apr)
-      apr = valid_number(apr)
+    if valid_number?(apr)
+      apr = apr.to_f
       break
     else
-      to_user("Please enter a number.")
-      to_user("IMPORTANT: Don't use a percentage symbol in your input!")
+      display("Please enter a number.")
+      display("IMPORTANT: Don't use a percentage symbol in your input!")
     end
   end
 
-  apr_to_percent = apr / 100
-  monthly_rate = apr_to_percent / 12.0
+  percent_to_apr = apr / 100
+  monthly_rate = percent_to_apr / 12.0
 
-  time = ''
+  display("How many years is your loan?")
+
   years = ''
-  months = ''
   loop do
-    to_user("Use months or years to calculate your loan? (Enter: months/years)")
-    time = gets.chomp.downcase
+    years = gets.chomp
 
-    if time == "years"
-      to_user("How mnay years is your loan?")
-
-      loop do
-        years = gets.chomp
-
-        if valid_number(years)
-          years = valid_number(years)
-          months = years * 12.0
-          break
-        else
-          to_user("Please enter a number for years.")
-        end
-      end
+    if valid_number?(years)
+      years = years.to_f
       break
-
-    elsif time == "months"
-      to_user("How many months is your loan?")
-
-      loop do
-        months = gets.chomp
-
-        if valid_number(months)
-          months = valid_number(months)
-          break
-        else
-          to_user("Please enter a number for months")
-        end
-      end
-      break
-
     else
-      to_user("Please enter 'months' or 'years'!")
+      display("Please enter a number for years.")
     end
   end
+
+  months = years * 12.0
 
   month_payment = amount * (monthly_rate / (1 - (1 + monthly_rate)**-months))
-  to_user("Your monthly payment is $#{format('%.2f', month_payment)} a month.")
+  display("Your monthly payment is $#{format('%.2f', month_payment)} a month.")
 
-  to_user("Would you like to calculate a different loan? (Press 'Y' if yes)")
+  display("Would you like to calculate a different loan? (Press 'Y' if yes)")
   again = gets.chomp
 
   break unless again.downcase().start_with?('y')
 end
 
-to_user("Goodbye!")
+display("Goodbye!")
