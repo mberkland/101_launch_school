@@ -5,9 +5,9 @@ def prompt(message)
 end
 
 def win?(first, second)
-  (first == 'rock' && second == 'paper') ||
-    (first == 'paper' && second == 'scissors') ||
-    (first == 'scissors' && second == 'rock')
+  (first == 'paper' && second == 'rock') ||
+    (first == 'scissors' && second == 'paper') ||
+    (first == 'rock' && second == 'scissors')
 end
 
 def display_results(player, computer)
