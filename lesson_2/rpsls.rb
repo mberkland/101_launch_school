@@ -4,28 +4,15 @@ WINNERS = { "rock" => %w(scissors lizard), "paper" => %w(rock spock),
             "scissors" => %w(paper lizard), "lizard" => %w(spock paper),
             "spock" => %w(scissors rock) }
 
-player_wins = 0
-computer_wins = 0
-ties = 0
-count = player_wins + computer_wins + ties
+ABBREVIATIONS = { "r" => "rock", "p" => "paper", "s" => "scissors",
+                  "l" => "lizard", "v" => "spock" }
 
 def prompt(message)
   Kernel.puts("=> #{message}")
 end
 
 def letter_to_choice(letter)
-  case letter
-  when 'r'
-    'rock'
-  when 'p'
-    'paper'
-  when 's'
-    'scissors'
-  when 'l'
-    'lizard'
-  when 'v'
-    'spock'
-  end
+  ABBREVIATIONS[letter]
 end
 
 def win?(first, second)
@@ -55,19 +42,23 @@ end
 prompt("Welcome! Let's play rock paper scissor lizard spock!")
 prompt("Play 5 rounds to determine the game winner")
 
+player_wins = 0
+computer_wins = 0
+ties = 0
+
 loop do
   choice = ''
   loop do
     rpsls_prompt = <<-MSG
   Type a letter to make your choice:
-    1) 'r' for rock
-    2) 'p' for paper
-    3) 's' for scissors
-    4) 'l' for lizard
-    5) 'v' for spock, he is a vulcan after all :)
+    'r' for rock
+    'p' for paper
+    's' for scissors
+    'l' for lizard
+    'v' for Spock, he is a Vulcan after all :)
   MSG
     prompt(rpsls_prompt)
-    choice = Kernel.gets().chomp()
+    choice = Kernel.gets().chomp().downcase
     choice = letter_to_choice(choice)
     if VALID_CHOICES.include?(choice)
       break
@@ -89,16 +80,13 @@ loop do
 
   display_results(choice, computer_choice)
   prompt("Total:")
-  prompt("You: #{player_wins} Computer: #{computer_wins} Ties: #{ties}")
+  prompt("You: #{player_wins}; Computer: #{computer_wins}; Ties: #{ties}")
 
-  count += 1
-
-  next unless count == 5
+  next unless (player_wins == 5) || (computer_wins == 5)
   display_game_winner(player_wins, computer_wins)
-  prompt("Do you want to play again? Enter 'y' for yes")
-  answer = Kernel.gets().chomp()
+  prompt("If you want to play again type 'y' for yes")
+  answer = Kernel.gets().chomp().downcase
   break unless answer.downcase().start_with?('y')
-  count = 0
   player_wins = 0
   computer_wins = 0
   ties = 0
