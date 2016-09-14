@@ -12,17 +12,17 @@ def prompt(msg)
 end
 
 def joinor(array, separator=", ", final_word="or")
-    index = 0
-    output = " "
+  index = 0
+  output = " "
 
   while index < array.size - 1
     output += array[index].to_s + separator
     index += 1
   end
-  puts output += final_word + " " + array[-1].to_s
+  puts "#{output}#{final_word} #{array[-1]}"
 end
 
-def who_goes_first()
+def who_goes_first
   loop do
     prompt "Who goes first? (player or computer)"
     answer = gets.chomp
@@ -88,45 +88,49 @@ end
 def computer_defense?(brd)
   WINNING_LINES.each do |line|
     if brd.values_at(*line).count(PLAYER_MARKER) == 2 &&
-      brd.values_at(*line).count(COMPUTER_MARKER) == 0
+       brd.values_at(*line).count(COMPUTER_MARKER).zero?
       return true
     end
   end
-  return false
+  false
 end
 
 def computer_defense!(brd)
   defend_array = []
   WINNING_LINES.each do |line|
     next unless brd.values_at(*line).count(PLAYER_MARKER) == 2 &&
-       brd.values_at(*line).count(COMPUTER_MARKER) == 0
-       defend_array = line
+                brd.values_at(*line).count(COMPUTER_MARKER).zero?
+    defend_array = line
   end
-  defend_hash = brd.select { |k, v| defend_array.include?(k) && v == INITIAL_MARKER }
+  defend_hash = brd.select do |k, v|
+    defend_array.include?(k) && v == INITIAL_MARKER
+  end
   defend_key = defend_hash.keys.select { |k| k }
-  brd[defend_key.join().to_i] = COMPUTER_MARKER
+  brd[defend_key.join.to_i] = COMPUTER_MARKER
 end
 
 def computer_offense?(brd)
-   WINNING_LINES.each do |line|
+  WINNING_LINES.each do |line|
     if brd.values_at(*line).count(COMPUTER_MARKER) == 2 &&
-       brd.values_at(*line).count(PLAYER_MARKER) == 0
-        return true
+       brd.values_at(*line).count(COMPUTER_MARKER).zero?
+      return true
     end
   end
-  return false
+  false
 end
 
 def computer_offense!(brd)
   defend_array = []
   WINNING_LINES.each do |line|
     next unless brd.values_at(*line).count(COMPUTER_MARKER) == 2 &&
-       brd.values_at(*line).count(PLAYER_MARKER) == 0
-       defend_array = line
+                brd.values_at(*line).count(COMPUTER_MARKER).zero?
+    defend_array = line
   end
-  defend_hash = brd.select { |k, v| defend_array.include?(k) && v == INITIAL_MARKER }
+  defend_hash = brd.select do |k, v|
+    defend_array.include?(k) && v == INITIAL_MARKER
+  end
   defend_key = defend_hash.keys.select { |k| k }
-  brd[defend_key.join().to_i] = COMPUTER_MARKER
+  brd[defend_key.join.to_i] = COMPUTER_MARKER
 end
 
 def board_full?(brd)
@@ -149,7 +153,7 @@ def detect_winner(brd)
 end
 
 def initialize_tally
-  {"Player" => 0, "Computer" => 0, "Tie" => 0}
+  { "Player" => 0, "Computer" => 0, "Tie" => 0 }
 end
 
 def tally_winner(brd, winner_count)
@@ -169,11 +173,11 @@ def display_winner_tally(winner_count)
 end
 
 def five_round_winner?(winner_count)
-  winner_count.each do |winner, count|
+  winner_count.each do |_, count|
     next unless count == 5
-      return true
+    return true
   end
-  return false
+  false
 end
 
 def detect_5round_winner(winner_count)
@@ -185,9 +189,9 @@ end
 
 def alternate_player(current_player)
   if current_player == 'computer'
-    current_player = 'player'
+    return 'player'
   else
-    current_player = 'computer'
+    return 'computer'
   end
 end
 
@@ -200,13 +204,14 @@ def place_piece!(board, current_player)
 end
 
 loop do
- winner_tally = initialize_tally
- prompt "Whoever wins 5 rounds of Tic Tac Toe Wins"
- prompt "Can you beat the Computer?"
- current_player = who_goes_first()
+  winner_tally = initialize_tally
+  prompt "The first to win 5 matches of Tic Tac Toe wins the game!"
+  prompt "Can you beat the Computer?"
+  choose_player = who_goes_first
 
   loop do
     board = initialize_board
+    current_player = choose_player
 
     loop do
       display_board(board)
