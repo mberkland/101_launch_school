@@ -104,7 +104,6 @@ def card_count(hand)
   else
     total = basic_total(hand)
   end
-  puts total
   total
 end
 
