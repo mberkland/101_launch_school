@@ -1,8 +1,9 @@
 require 'pry'
 
-SUIT = [["Hearts"], ["Clubs"], ["Diamonds"], ["Spades"]]
-STRAIGHT = [["Ace", 1],["2", 2],["3",3],["4",4],["5", 5],["6",6],["7", 7],
-           ["8",8],["9",9],["10", 10],["Jack", 10], ["Queen", 10],["King", 10]]
+SUIT = [["Hearts"], ["Clubs"], ["Diamonds"], ["Spades"]].freeze
+STRAIGHT = [["Ace", 1], ["2", 2], ["3", 3], ["4", 4], ["5", 5], ["6", 6],
+            ["7", 7], ["8", 8], ["9", 9], ["10", 10], ["Jack", 10],
+            ["Queen", 10], ["King", 10]].freeze
 
 def initialize_hearts(suit, straight)
   i = 0
@@ -44,10 +45,9 @@ def initialize_spades(suit, straight)
   spades
 end
 
-
 def initialize_deck(suit, straight)
-  deck = initialize_hearts(SUIT, STRAIGHT) + initialize_clubs(SUIT, STRAIGHT) +
-  initialize_diamonds(SUIT, STRAIGHT) + initialize_spades(SUIT, STRAIGHT)
+  deck = initialize_hearts(suit, straight) + initialize_clubs(suit, straight) +
+         initialize_diamonds(suit, straight) + initialize_spades(suit, straight)
   deck
 end
 
@@ -71,7 +71,7 @@ end
 def display_card_dealer_initial(card)
   prompt("Dealer has: ")
   prompt("- #{card[0][1]} of #{card[0][0]}")
-  prompt("- #{1} unknown card")
+  prompt("- 1 unknown card")
 end
 
 def display_card_dealer(cards)
@@ -93,20 +93,19 @@ end
 def basic_total(hand)
   total = 0
   hand.each { |card| total += card[-1] }
-  return total
+  total
 end
 
 def card_count(hand)
   if contains_ace?(hand) == false
     total = basic_total(hand)
+  elsif basic_total(hand) + 10 <= 21
+    total = basic_total(hand) + 10
   else
-    if basic_total(hand) + 10 <= 21
-      total = basic_total(hand) + 10
-    else
-      total = basic_total(hand)
-    end
+    total = basic_total(hand)
   end
-  return total
+  puts total
+  total
 end
 
 def busted?(hand)
@@ -136,7 +135,7 @@ def play_again?
 end
 
 def difference_from_21(hand)
-  return (21 - card_count(hand))
+  (21 - card_count(hand))
 end
 
 def dealer_won?(player_cards, dealer_cards)
@@ -181,12 +180,11 @@ loop do
       display_card_dealer_initial(dealers_cards)
       display_card_player(player_cards)
     end
-    break if answer == 'stay' || busted?(player_cards)   # the busted? method is not shown
+    break if answer == 'stay' || busted?(player_cards)
   end
 
   puts " "
   if busted?(player_cards)
-    # probably end the game? or ask the user to play again?
     prompt("Player Busted!!!")
     prompt("Dealer wins! You lost this round!")
     if play_again? == true
@@ -197,10 +195,9 @@ loop do
       break
     end
   else
-    puts "You chose to stay!"  # if player didn't bust, must have stayed to get here
+    puts "You chose to stay!"
   end
 
-  # ... continue on to Dealer turn
   loop do
     display_card_player(player_cards)
     display_card_dealer(dealers_cards)
