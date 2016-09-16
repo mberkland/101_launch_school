@@ -96,7 +96,7 @@ def display_final_hands(dealer_cards, player_cards)
   puts "=============="
 end
 
-def game_winneer?(player, dealer)
+def game_winner?(player, dealer)
   player == 5 || dealer == 5
 end
 
@@ -117,7 +117,7 @@ loop do
   dealer = 0
   ties = 0
 
-  prompt "Welcome to TWenty One"
+  prompt "Welcome to Twenty One"
   prompt "Win 5 rounds to win the game."
   prompt "Can you beat the dealer?"
 
@@ -167,7 +167,7 @@ loop do
       dealer += 1
       count += 1
       display_current_count(player, dealer, ties)
-      next unless game_winneer?(player, dealer)
+      next unless game_winner?(player, dealer)
       break
       # play_again? ? next : break
     else
@@ -193,7 +193,7 @@ loop do
       player += 1
       count += 1
       display_current_count(player, dealer, ties)
-      next unless game_winneer?(player, dealer)
+      next unless game_winner?(player, dealer)
       break
       # play_again? ? next : break
     else
@@ -215,7 +215,7 @@ loop do
     count += 1
     display_current_count(player, dealer, ties)
     # break game winner
-    break if game_winneer?(player, dealer)
+    break if game_winner?(player, dealer)
   end
 
   prompt "Game winner is: #{determine_winner(player)}"
@@ -227,7 +227,7 @@ prompt "Thank you for playing Twenty One! Good bye!"
 # Bonus features
 
 # 1. We can't replace all calls to the total method with local variables becuase
-# often times we need to use the total method to recaluclate the total when
+# many times we need to use the total method to recalculate the total when
 # a new card is dealt to the player or dealer. Using the local variable total
 # without recalculating values based on cards dealt would cause the count of the
 # hand to be incorrect
