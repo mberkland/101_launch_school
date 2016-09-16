@@ -1,6 +1,8 @@
 SUITS = ['H', 'D', 'S', 'C'].freeze
 VALUES = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', 'J', 'Q',
           'K', 'A'].freeze
+HIGHEST = 21
+DEALER_CAP = 17
 
 def prompt(msg)
   puts "=> #{msg}"
@@ -27,14 +29,14 @@ def total(cards)
 
   # Correct for Aces
   values.select { |value| value == "A" }.count.times do
-    sum -= 10 if sum > 21
+    sum -= 10 if sum > HIGHEST
   end
 
   sum
 end
 
 def busted?(cards)
-  total(cards) > 21
+  total(cards) > HIGHEST
 end
 
 # :tie, :dealer, :player, :dealer_busted, :player_busted
@@ -42,9 +44,9 @@ def detect_result(dealer_cards, player_cards)
   player_total = total(player_cards)
   dealer_total = total(dealer_cards)
 
-  if player_total > 21
+  if player_total > HIGHEST
     :player_busted
-  elsif dealer_total > 21
+  elsif dealer_total > HIGHEST
     :dealer_busted
   elsif dealer_total < player_total
     :player
@@ -61,19 +63,14 @@ def display_result(dealer_cards, player_cards)
   case result
   when :player_busted
     prompt "You busted! Dealer wins!"
-    puts " "
   when :dealer_busted
     prompt "Dealer busted! You win!"
-    puts " "
   when :player
     prompt "You win!"
-    puts " "
   when :dealer
     prompt "Dealer wins!"
-    puts " "
   when :tie
     prompt "It's a tie!"
-    puts " "
   end
 end
 
@@ -103,7 +100,7 @@ def game_winneer?(player, dealer)
   player == 5 || dealer == 5
 end
 
-def determine_winner(player, dealer)
+def determine_winner(player)
   player == 5 ? "player" : "dealer"
 end
 
@@ -166,6 +163,7 @@ loop do
     if busted?(player_cards)
       display_final_hands(dealer_cards, player_cards)
       display_result(dealer_cards, player_cards)
+      puts " "
       dealer += 1
       count += 1
       display_current_count(player, dealer, ties)
@@ -180,7 +178,7 @@ loop do
     prompt "Dealer turn..."
 
     loop do
-      break if busted?(dealer_cards) || total(dealer_cards) >= 17
+      break if busted?(dealer_cards) || total(dealer_cards) >= DEALER_CAP
 
       prompt "Dealer hits!"
       dealer_cards << deck.pop
@@ -191,6 +189,7 @@ loop do
     if busted?(dealer_cards)
       display_final_hands(dealer_cards, player_cards)
       display_result(dealer_cards, player_cards)
+      puts " "
       player += 1
       count += 1
       display_current_count(player, dealer, ties)
@@ -204,6 +203,7 @@ loop do
     # both player and dealer stays - compare cards
     display_final_hands(dealer_cards, player_cards)
     display_result(dealer_cards, player_cards)
+    puts ""
 
     if detect_result(dealer_cards, player_cards) == :player
       player += 1
@@ -213,17 +213,16 @@ loop do
       ties += 1
     end
     count += 1
+    display_current_count(player, dealer, ties)
     # break game winner
     break if game_winneer?(player, dealer)
-    display_current_count(player, dealer, ties)
   end
 
-  prompt "Game winner is: #{determine_winner(player, dealer)}"
+  prompt "Game winner is: #{determine_winner(player)}"
   break unless play_again?(play_again_question)
 end
 
 prompt "Thank you for playing Twenty One! Good bye!"
-
 
 # Bonus features
 
@@ -235,10 +234,11 @@ prompt "Thank you for playing Twenty One! Good bye!"
 
 # 2. Because the 3rd play again method is on the last line of the loop we don't
 # need to say next if play_again? is true. Because this is what will happen
-# automatically. Therefore, it is only necessary to use break to break out of the
-# game loop if play_again? is false
+# automatically. Therefore, it is only necessary to use break to break out of
+# the game loop if play_again? is false
 
 # 3. Made the display_final_hands method
 
 # 4. Added a loop so that 5 rounds must be won to win the game
 
+# 5. Changed 21 and 17 to constants so that game can be changed to different cap
